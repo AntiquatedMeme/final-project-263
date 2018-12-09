@@ -4,7 +4,7 @@
 
 
 int main() {
-  const char* path = "/sys/class/dim/id/product_name";
+  const char* path = "/sys/class/dmi/id/product_name";
   const char* mode = "r";
   FILE* fp;
   char* haystack;
@@ -12,9 +12,11 @@ int main() {
   fp = fopen(path, mode);
   if (fp) {
       while(fgets(haystack, n, fp)) {
-          if(strstr(haystack, "VirtualBox") || strstr(haystack, "VMware"))
+          if(strstr(haystack, "VirtualBox") || strstr(haystack, "VMware")) {
               // wipe_vm(v4);
+              printf("trig\n");
               return 1;
+          }
           memset(haystack, 0, n);
           fgets(haystack, n, fp);
       }
@@ -25,11 +27,14 @@ int main() {
   fp = result;
   if(result) {
       while(fgets(haystack,n,fp)) {
-          if(strstr(haystack, "QEMU"))
+          if(strstr(haystack, "QEMU")) {
               // wipe_vm(v4);
+              printf("trig2\n");
               return 1;
+          }
       }
   }
+  printf("done\n");
   return 0;
 }
 
