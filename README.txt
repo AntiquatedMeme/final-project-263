@@ -3,6 +3,13 @@ unset LD_PRELOAD
 gcc -Wall -shared -fPIC  fakelibc.c -o fakelibc.so -ldl
 export LD_PRELOAD=$PWD/fakelibc.so
 
+for sudo mode:
+gcc -Wall -shared -fPIC  fakelibc.c -o fakelibc.so -ldl
+export LD_PRELOAD=$PWD/fakelibc.so
+sudo LD_PRELOAD=$PWD/fakelibc.so ./antivirt
+sudo LD_PRELOAD=$PWD/fakelibc.so ./wipe_vm
+(Note: Sudo does not use exported environment variables, so be careful when running in sudo mode)
+
 How to run evil code (run after the LD_PRELOAD is exported):
 gcc antivirt.c -o antivirt
 ./antivirt
