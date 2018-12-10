@@ -14,16 +14,19 @@ FILE* fopen(const char *pathname, const char* mode) {
     // find product_name real path
     char* pn = "/sys/class/dmi/id/product_name";
     char product_name[4097];
-    realpath(pn, product_name);
+    if(!realpath(pn, product_name))
+        return NULL;
 
     // find sys vendor real path
     char* sv = "/sys/class/dmi/id/sys_vendor";
     char sys_vendor[4097];
-    realpath(sv, sys_vendor);
+    if(!realpath(sv, sys_vendor))
+        return NULL;
 
     // find pathname real path
     char resolved_path[4097];
-    realpath(pathname, resolved_path); 
+    if(realpath(pathname, resolved_path))
+        return NULL;
 
     // emulate vmware product name
     if (strcmp(resolved_path, product_name) == 0) { 
