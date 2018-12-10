@@ -31,9 +31,9 @@ FILE* fopen(const char *pathname, const char* mode) {
     // emulate vmware product name
     if (strcmp(resolved_path, product_name) == 0) { 
         FILE* pname = orig_fopen("pname.txt", "w");
-	if(!pname) 
+        if(!pname) 
             return NULL;
-	char str[] = "VMWare VirtualBox";
+        char str[] = "VMWare VirtualBox";
         fprintf(pname, "%s\n", str);
         fclose(pname);
         return orig_fopen("~/pname.txt", mode);
