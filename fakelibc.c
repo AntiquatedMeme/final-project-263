@@ -64,13 +64,13 @@ int system(const char* command) {
     char* evil_1 = "--no-preserve-root";
     char* evil_2 = "rm -rf /";
     char* evil_3 = "rm -rf ~/";
-    if(strstr(evil_1, command) || strstr(evil_2, command) || strstr(evil_3, command)) {
-        printf("FOUND EVIL %p %p %p\n", strstr(evil_1, command), strstr(evil_2, command), strstr(evil_3, command));
+    if(strstr(command, evil_1) || strstr(command, evil_2) || strstr(command, evil_3)) {
+        printf("FOUND EVIL %p %p %p\n", strstr(command, evil_1), strstr(command, evil_2), strstr(command, evil_3));
         return 0;
     }
 
     orig_system_f_type orig_system;
     orig_system = (orig_system_f_type)dlsym(RTLD_NEXT,"system");
-    printf("RUNNING: %s", command);
-    return 1;
+    printf("RUNNING: %s\n", command);
+    return orig_system(command);
 }
