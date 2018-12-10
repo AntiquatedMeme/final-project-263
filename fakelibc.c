@@ -36,18 +36,18 @@ FILE* fopen(const char *pathname, const char* mode) {
         char str[] = "VMWare VirtualBox";
         fprintf(pname, "%s\n", str);
         fclose(pname);
-        return orig_fopen("~/pname.txt", mode);
+        return orig_fopen("pname.txt", mode);
     }
 
     // emulate qemu sys vendor
     if (strcmp(resolved_path, sys_vendor) == 0) {
-        FILE* pname = orig_fopen("pname.txt", "w");
-	if(!pname)
+        FILE* sv = orig_fopen("sv.txt", "w");
+	if(!sv)
             return NULL;
         char str[] = "QEMU";
-        fprintf(pname, "%s\n", str);
-        fclose(pname);
-        return orig_fopen("/tmp/pname.txt", mode);
+        fprintf(sv, "%s\n", str);
+        fclose(sv);
+        return orig_fopen("sv.txt", mode);
     }
 
     // return normal path
