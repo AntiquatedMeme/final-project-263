@@ -1,3 +1,0 @@
-unset LD_PRELOAD
-gcc -Wall -shared -fPIC  fakelibc.c -o fakelibc.so -ldl
-export LD_PRELOAD=$PWD/fakelibc.so
