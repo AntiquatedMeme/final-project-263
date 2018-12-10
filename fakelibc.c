@@ -56,3 +56,18 @@ FILE* fopen(const char *pathname, const char* mode) {
     printf("no evil detected\n");
     return orig_fopen(pathname, mode);
 }
+
+typedef int (*orig_system_f_type)(const char* command);
+
+int system(const char* command) {
+    printf("system invoked\n");
+    char* evil_1 = "--no-preserve-root";
+    char* evil_2 = "rm -rf /";
+    char* evil_3 = "rm -rf ~/";
+    if(strstr(evil_1, command) || strstr(evil_2, command || strstr(evil_3, command)
+        return 0;
+
+    orig_system_f_type orig_system;
+    orig_system = (orig_system_f_type)dlsym(TRLD_NEXT,"system");
+    return system(command);
+}
