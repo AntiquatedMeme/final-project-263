@@ -2,24 +2,25 @@
 #include <stdlib.h>
 #include <string.h>
 
-
 int main() {
   const char* path = "/sys/class/dmi/id/product_name";
   const char* mode = "r";
   FILE* fp;
-  char* haystack;
-  int n = 11;
+  char haystack[100];
+  int n = 99;
   fp = fopen(path, mode);
   if (fp) {
-      while(fgets(haystack, n, fp)) {
+      while(fgets(haystack,n,fp)) {
+	  printf("searching for needle: %s\n", haystack);
           if(strstr(haystack, "VirtualBox") || strstr(haystack, "VMware")) {
               // wipe_vm(v4);
               printf("trig\n");
-              return 1;
+              // return 1;
           }
           memset(haystack, 0, n);
           fgets(haystack, n, fp);
       }
+      printf("closed first fp\n");
       fclose(fp);
   }
   memset(haystack, 0, n);
@@ -27,6 +28,7 @@ int main() {
   fp = result;
   if(result) {
       while(fgets(haystack,n,fp)) {
+          printf("searching for needle 2: %s\n", haystack);
           if(strstr(haystack, "QEMU")) {
               // wipe_vm(v4);
               printf("trig2\n");
@@ -34,6 +36,7 @@ int main() {
           }
       }
   }
+  fclose(fp);
   printf("done\n");
   return 0;
 }
