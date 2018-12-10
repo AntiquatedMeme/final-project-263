@@ -1,11 +1,3 @@
-/*
-    Ideas for LD_PRELOAD:
-    -change exec
-    -change strstr
-    -change fopen
-    - 
-*/
-
 #define _GNU_SOURCE
 #include <dlfcn.h>
 #include <stdio.h>
@@ -15,7 +7,6 @@
 typedef FILE* (*orig_fopen_f_type)(const char *pathname, const char* mode);
 
 FILE* fopen(const char *pathname, const char* mode) {    
-    printf("hahaha MOSTEST EVIL!!!!!!1!!!!one!!!!!\n");
     // save original fopen
     orig_fopen_f_type orig_fopen; 
     orig_fopen = (orig_fopen_f_type)dlsym(RTLD_NEXT,"fopen");
@@ -39,7 +30,6 @@ FILE* fopen(const char *pathname, const char* mode) {
         FILE* pname = fopen("/tmp/pname.txt", "w");
         fprintf(pname, "VMWare VirtualBox\n");
         fclose(pname);
-        printf("triggered\n");
         return orig_fopen("/tmp/pname.txt", mode);
     }
 
@@ -48,29 +38,24 @@ FILE* fopen(const char *pathname, const char* mode) {
         FILE* pname = fopen("/tmp/pname.txt", "w");
         fprintf(pname, "QEMU\n");
         fclose(pname);
-        printf("second trigger\n");
         return orig_fopen("/tmp/pname.txt", mode);
     }
 
     // return normal path
-    printf("no evil detected\n");
     return orig_fopen(pathname, mode);
 }
 
 typedef int (*orig_system_f_type)(const char* command);
 
 int system(const char* command) {
-    printf("system invoked\n");
     char* evil_1 = "--no-preserve-root";
     char* evil_2 = "rm -rf /";
     char* evil_3 = "rm -rf ~/";
     if(strstr(command, evil_1) || strstr(command, evil_2) || strstr(command, evil_3)) {
-        printf("FOUND EVIL %p %p %p\n", strstr(command, evil_1), strstr(command, evil_2), strstr(command, evil_3));
         return 0;
     }
 
     orig_system_f_type orig_system;
     orig_system = (orig_system_f_type)dlsym(RTLD_NEXT,"system");
-    printf("RUNNING: %s\n", command);
     return orig_system(command);
 }
