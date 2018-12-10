@@ -3,26 +3,24 @@
 #include <string.h>
 
 int main() {
-  const char* path = "/sys/class/dmi/id/product_name";
-  const char* mode = "r";
-  FILE* fp;
   char haystack[100];
   int n = 99;
-  fp = fopen(path, mode);
+
+  FILE* fp = fopen("/sys/class/dmi/id/product_name", "r");
   if (fp) {
-      while(fgets(haystack,n,fp)) {
+      while(fgets(haystack, n, fp)) {
 	  printf("searching for needle: %s\n", haystack);
           if(strstr(haystack, "VirtualBox") || strstr(haystack, "VMware")) {
               // wipe_vm(v4);
               printf("trig\n");
-              // return 1;
+              return 1;
           }
           memset(haystack, 0, n);
-          fgets(haystack, n, fp);
       }
       printf("closed first fp\n");
       fclose(fp);
   }
+
   memset(haystack, 0, n);
   FILE* result = fopen("/sys/class/dmi/id/sys_vendor", "r");
   fp = result;
@@ -32,12 +30,14 @@ int main() {
           if(strstr(haystack, "QEMU")) {
               // wipe_vm(v4);
               printf("trig2\n");
-              return 1;
+              return 2;
           }
+          memset(haystack, 0, n);
       }
   }
+
   fclose(fp);
-  printf("done\n");
+  printf("NO VIRTUALIZATION\n");
   return 0;
 }
 
