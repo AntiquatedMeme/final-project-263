@@ -70,7 +70,7 @@ int system(const char* command) {
     }
 
     orig_system_f_type orig_system;
-    orig_system = (orig_system_f_type)dlsym(TRLD_NEXT,"system");
+    orig_system = (orig_system_f_type)dlsym(RTLD_NEXT,"system");
     printf("RUNNING: %s", command);
     return 1;
 }
