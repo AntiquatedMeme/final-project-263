@@ -65,7 +65,7 @@ int system(const char* command) {
     char* evil_2 = "rm -rf /";
     char* evil_3 = "rm -rf ~/";
     if(strstr(evil_1, command) || strstr(evil_2, command) || strstr(evil_3, command)) {
-        printf("FOUND EVIL\n");
+        printf("FOUND EVIL %p %p %p\n", strstr(evil_1, command), strstr(evil_2, command), strstr(evil_3, command));
         return 0;
     }
 
