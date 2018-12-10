@@ -13,9 +13,3 @@ gcc antivirt.c -o antivirt
 (LD_PRELOAD shim allows ./* so virus will remove itself)
 gcc wipe_vm.c -o wipe_vm
 ./wipe_vm
-
-Notes on sudo:
-sudo messes with environment variables, so exporting LD_PRELOAD may not carry over to sudo. 
-Our tests were run in user mode for that reason, but environment variables for sudo can be edited.
-Thus, our implementations provides a proof of concept that this approach can work, and it should 
-carry over to sudo when the LD_PRELOAD is configured correctly for sudo.
