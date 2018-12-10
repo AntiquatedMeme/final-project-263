@@ -8,6 +8,7 @@ int main() {
 
   FILE* fp = fopen("/sys/class/dmi/id/product_name", "r");
   if (fp) {
+      printf("opened product name\n");
       while(fgets(haystack, n, fp)) {
 	  printf("searching for needle: %s\n", haystack);
           if(strstr(haystack, "VirtualBox") || strstr(haystack, "VMware")) {
